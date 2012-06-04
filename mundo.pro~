@@ -38,8 +38,8 @@ percepcao( [1,2],'P?',   nada ) :- !.
 percepcao( [2,2],'P?',   poco ) :- !.
 percepcao( [3,2],'P?',   poco ) :- !.
 percepcao( [1,3], '.',   nada ) :- !.
-percepcao( [2,3],'P?',   nada ) :- !.
-percepcao( [3,3],'P?',tesouro ) :- !.
+percepcao( [2,3],'P?',tesouro ) :- !.
+percepcao( [3,3],'P?',   nada ) :- !.
 
 percepcao( [X,Y],P ) :-
 	percepcao( [X,Y],P,_ ).

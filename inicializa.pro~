@@ -24,9 +24,6 @@ addArvore( Possibilidades ) :-
 removePrimeiroArvore( Posicao ) :-
 	getArvore( Arvore ),
 	removePrimeiroLista( Arvore,Posicao,NovaArvore ),
-%	write( '\nNovaArvore: ' ),
-%	format( ' ~p ',[NovaArvore] ),
-%	write( '\n\n' ),
 	setArvore( NovaArvore ).
 
 % Posicao Atual %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,71 +48,69 @@ setPossibilidades( Possibilidades ) :-
 getPossibilidades( Possibilidades ) :-
 	possibilidades( Possibilidades ).
 defPossibilidadesMundo( Percepcao,Possibilidades ) :-
-%	write( '\ndefPossibilidadesMundo...\n' ),
-%	format( ' Percepcao.....: ~p \n',[Percepcao] ),
-%	format( ' Possibilidades: ~p \n',[Possibilidades] ),
 	removePrimeiroLista( Possibilidades,Posicao,NovasPossibilidades ),
-%	format( ' Posicao............: ~p \n',[Posicao] ),
-%	format( ' NovasPossibilidades: ~p \n',[NovasPossibilidades] ),
 	definePosicao( Posicao,Percepcao ),
 	defPossibilidadesMundo( Percepcao,NovasPossibilidades ).
 	
 % Inicializa o jogo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-comeca_jogo :-
-	write( '\n\tINICIALIZA_JOGO' ),
-	setVida( 5 ),
+comeca_jogo( NumeroVidas ) :-
+	setVida( NumeroVidas ),
 	setArvore( [[1,1]] ),
 	setPosicaoAtual( [1,1] ),
 	setHistorico( [] ),
 	setPossibilidades( [] ),
+	getArvore( A ),
+	getPosicaoAtual( P ),
+	getHistorico( H ),
+	getPossibilidades( Possibilidades ),
+	write( '\nINICIALIZANDO_JOGO...\n' ),
+	format( '\tNumero de vidas..: ~p\n',[NumeroVidas] ),
+	format( '\tArvore inicial...: ~p\n',[A] ),
+	format( '\tPosicao Atual....: ~p\n',[P] ),
+	format( '\tHistorico inicial: ~p\n',[H] ),
+	format( '\tPossibilidades...: ~p\n',[Possibilidades] ),
+	write( 'INICIANDO_AGENTE...\n' ),
 	inicia_agente.
 
 % Inicia o agente %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 inicia_agente :-
-	write( '\n\tINICIA_AGENTE\n\n' ),
 	getArvore( A ),
-	format( '\nArvore: ~p \n',[A] ),
 	getHistorico( B ),
-	format( '\nHistorico: ~p \n',[B] ),
 	getVida( C ),
-	format( '\nVida: ~p \n',[C] ),
+	write( '\n\tMOVIMENTO DO AGENTE\n' ),
+	format( 'Arvore...: ~p \n',[A] ),
+	format( 'Historico: ~p \n',[B] ),
+	format( 'Vida.....: ~p \n\n',[C] ),
 	removePrimeiroArvore( Posicao ),
 	definePosicao( Posicao,'A' ),
 	setPosicaoAtual( Posicao ),
 	imprimeMundo,
 	achouTesouro( Posicao ) -> (
-		write( '\n\n\tEncontrou o ouro!!!\n\n' )
+		write( '\n\tEncontrou o ouro!!!' ),
+		format( '\n\tO tesouro estava escondido na posicao ~p\n\n',[Posicao] ),
+		definePosicao( Posicao,'T' ),
+		imprimeMundo
 	);(
-		write( '\n\n\tNao encontrou o ouro!!!\n\n' ),
+		write( '\n\tNao encontrou o ouro!!!' ),
 		getPosicaoAtual( Posicao ),
 		morreu( Posicao ) -> (
-			write( '\n\n\tMorreu!!!\n\n' ),
-			getVida( Vida ),
-			( Vida == 0 ) -> (
-				write( '\n\n\tGame-over!!!\n\n' )
+			write( '\n\tMorreu!!!' ),
+			subVida,
+			getVida( Vaux ),
+			Vaux == 0 -> (
+				write( '\n\tGame-Over!!!\n\n' )
 			);(
-% se morreu e ainda tem vida... define o poco no mundo... retrocedeHistorico
-				write( '\n\n\tAinda tem vida!!!\n\n' ),
-				getPosicaoAtual( Posicao ),
-				subVida,
-				geraPossibilidades( Posicao,Possibilidades ),
-				setPossibilidades( Possibilidades ),
-				getTamanhoLista( Possibilidades,Tamanho ),
-				G is Tamanho - 1,
-				addHistorico( Posicao,G ),
-				( Tamanho == 0 ) -> (
-					getHistorico( Historico ),
-					retrocedeHistorico( Historico,Ha,HistoricoFinal ),
-					setHistorico( HistoricoFinal ),
-					inicia_agente
-				);(
-					getPossibilidades( Possibilidades ),
-					addArvore( Possibilidades ),
-					inicia_agente
-				)
-			)
+				getVida( Vaux ),
+				format( '\n\tMas ainda tem ~p vida(s)!!!\n\n',[Vaux] )
+			),
+			getPosicaoAtual( Posicao ),
+			definePosicao( Posicao,'P' ),
+			getHistorico( Historico ),
+			retrocedeHistorico( Historico,Ha,HistoricoFinal ),
+			setHistorico( HistoricoFinal ),
+			inicia_agente
 		);(
-			write( '\n\n\tNao morreu!!!\n\n' ),
+			write( '\n\tNao morreu!!!' ),
 			getPosicaoAtual( Posicao ),
 			geraPossibilidades( Posicao,Possibilidades ),
 			setPossibilidades( Possibilidades ),
@@ -123,15 +118,15 @@ inicia_agente :-
 			G is Tamanho - 1,
 			addHistorico( Posicao,G ),
 			( Tamanho == 0 ) -> (
-				write( '\n\n\tFolha!!!\n\n' ),
+				write( '\n\tTem certeza que definiu a posicao do tesouro?' ),
 				getHistorico( Historico ),
 				retrocedeHistorico( Historico,Ha,HistoricoFinal ),
 				setHistorico( HistoricoFinal )
-%				inicia_agente
 			);(
-				write( '\n\nNao eh folha!!!\n\n' ),
+				write( '\n\tAinda nao chegou numa folha!!!\n\n' ),
 				getPossibilidades( PossibilidadesAux ),
 				addArvore( PossibilidadesAux ),
+				getPosicaoAtual( Posicao ),
 				percepcao( Posicao,Percepcao ),
 				defPossibilidadesMundo( Percepcao,PossibilidadesAux );
 				imprimeMundo,

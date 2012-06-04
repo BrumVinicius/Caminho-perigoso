@@ -22,15 +22,6 @@ dimensoes( X, Y ) :-
 % Y 1  .  .  .
 % Y 2  .  P  P
 % Y 3  .  T  .
-%percepcao( [1,1], nada,   nada ) :- !.
-%percepcao( [2,1],brisa,   nada ) :- !.
-%percepcao( [3,1], nada,   nada ) :- !.
-%percepcao( [1,2],brisa,   nada ) :- !.
-%percepcao( [2,2],brisa,   poco ) :- !.
-%percepcao( [3,2],brisa,tesouro ) :- !.
-%percepcao( [1,3],brisa,   nada ) :- !.
-%percepcao( [2,3],brisa,   poco ) :- !.
-%percepcao( [3,3],brisa,   nada ) :- !.
 percepcao( [1,1], '.',   nada ) :- !.
 percepcao( [2,1],'P?',   nada ) :- !.
 percepcao( [3,1],'P?',   nada ) :- !.
