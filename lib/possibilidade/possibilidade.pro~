@@ -1,0 +1,7 @@
+% procedimento para trabalhar com possibilidades
+
+geraPossibilidades( [X,Y],A ) :-
+	posicaoValida( [X,Y] ),
+	vizinhanca( [X,Y],V ),
+	geraLista( L ),
+	verificaVizinhanca( V,L,A ).

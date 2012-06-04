@@ -1,0 +1,15 @@
+% procedimento para carregar as "bibliotecas"
+
+carregaLista :-
+	consult( './_lista/lista.pro' ).
+
+carregaVizinhanca :-
+	consult( './vizinhanca/vizinhanca.pro' ).
+
+carregaPossibilidade :-
+	consult( './possibilidade/possibilidade.pro' ).
+
+carregaTodasBibliotecas:-
+	carregaLista,carregaVizinhanca,carregaPossibilidade.
+
+:- initialization( carregaTodasBibliotecas ).

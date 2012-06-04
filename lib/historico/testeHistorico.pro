@@ -1,0 +1,26 @@
+% testes com historico...
+
+testeHistorico :-
+	geraHistorico( H ),
+	adicionaHistorico( 1,[1,1],H,H1 ),
+	adicionaHistorico( 1,[2,1],H1,H2 ),
+	adicionaHistorico( 0,[3,1],H2,H3 ),
+	adicionaHistorico( 1,[3,2],H3,H4 ),
+	adicionaHistorico( 1,[2,2],H4,H5 ),
+	adicionaHistorico( 0,[1,2],H5,H6 ),
+	adicionaHistorico( 0,[1,3],H6,H7 ),
+	adicionaHistorico( 0,[2,3],H7,H8 ),
+	adicionaHistorico( 0,[3,3],H8,H9 ),
+	definePosicao( [1,1],'A' ),
+	definePosicao( [2,1],'A' ),
+	definePosicao( [3,1],'A' ),
+	definePosicao( [3,2],'A' ),
+	definePosicao( [2,2],'A' ),
+	definePosicao( [1,2],'A' ),
+	definePosicao( [1,3],'A' ),
+	definePosicao( [2,3],'A' ),
+	definePosicao( [3,3],'A' ),
+	imprimeMundo,
+        retrocedeHistorico( H9,Hf,H10 ),
+	write( '\n' ),
+	imprimeMundo.
