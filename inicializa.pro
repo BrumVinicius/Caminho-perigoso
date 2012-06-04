@@ -94,7 +94,7 @@ inicia_agente :-
 			( Vida == 0 ) -> (
 				write( '\n\n\tGame-over!!!\n\n' )
 			);(
-% se morreu e ainda tem vida... define o poco no mundo... retrocedeHistorico
+% se morreu e ainda tem vida... define o poco no mundo... retrocedeHistorico...
 				write( '\n\n\tAinda tem vida!!!\n\n' ),
 				getPosicaoAtual( Posicao ),
 				subVida,
